@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+  <link rel="stylesheet" href="{% static 'css/create.css' %}">
+{% endblock style %}
+
+
+{% block content %}
+  <div class="create__total">
+    <!--header-->
+    <div class="create__header">
+      <div><a class="create__header--text" href="{% url 'tcat:index' %}">취소</a></div>
+      <div class="create__header--title">기록 추가</div>
+    </div>
+
+    <!--main-->
+    <form id="tcatForm" action="{% url 'tcat:create' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="create__main">
+        <!--image-->
+        <div class="d-flex align-items-center mb-3">
+          <div class="filebox preview-image">
+            <label for="input-file">사진 첨부하기</label> 
+            <input type="file" id="input-file" class="upload-hidden" name="image"> 
+          
+            <img id="select_previewImage" class="image-thumbnail" src="" style="max-width: 100%; height: 50px; margin-left: 10px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#select_exampleModal">
+            <div class="modal fade" id="select_exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 10;">
+              <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body text-center" style="display: flex; justify-content: center; align-items: center;">
+                    <img id="select_modalImage" src="" style="width: 500px; height: auto;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button id="webImageButton" type="button" class="main__image--search">웹 이미지 검색</button>
+          <input type="hidden" id="selectedImage" name="selectedImage" value="">
+
+          <img id="previewImage" src="" style="max-width: 100%; height: 50px; margin-left: 10px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" style="display: flex; justify-content: center; align-items: center;">
+                  <img id="modalImage" src="" style="width: 500px; height: auto;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--contents-->
+        <div class="main__contents">
+          <div class="contents__title">
+            <div class="contents__title--title">제목<span style="color: red;">*</span></div>
+            <input type="text" name="title" class="contents__title--input" required>
+          </div>
+          <div class="d-flex contents__date">
+            <div class="contents__title--title">일시<span style="color: red;">*</span></div>
+            <input type="date" name="date" id="calendar-date-input" value="select_date">
+          </div>
+          <div class="d-flex contents__location">
+            <div class="contents__title--title">장소</div>
+            {{ form.location }}
+          </div>
+          <div class="d-flex contents__price">
+            <div class="contents__title--title">금액</div>
+            {{ form.price }}
+          </div>
+          <div class="d-flex contents__categori">
+            <div class="contents__title--title">카테고리<span style="color: red;">*</span></div>
+            {{ form.categori }}
+          </div>
+
+          <div id="new_add">
+            {{ dynamic_form.management_form }}
+            {% for formset_form in dynamic_form %}
+              <div>
+                <input type="text" name="{{ formset_form.prefix }}-field_title" placeholder="제목">
+                <input type="text" name="{{ formset_form.prefix }}-field_value" placeholder="내용">
+              </div>
+            {% endfor %}
+          </div>
+  
+          <div class="contents__add">
+            <input type="button" value="+ 항목 추가" onclick='createDiv()' class="contents__add-plus">
+            <input type="button" value="- 항목 삭제" onclick="deleteDiv()" class="contents__add-minus">
+          </div>
+          
+          <div class="d-flex contents__review">
+            {{ form.media }}
+            <div>{{ form.review }}</div>
+          </div>
+        </div>
+      </div>
+      <input type="submit" value="등록" class="main__input">
+    </form>    
+  </div>
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="close">&times;</div>
+    <!-- 통합 검색 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <form id="searchForm" style="margin: 0 auto;">
+      <input type="text" id="query" placeholder="검색어를 입력하세요" class="modal__search--input">
+    </form>
+    <div style="margin: 0 auto;">
+      <button id="kakaoSearchButton" class="modal__kakaoSearch--button"><img src="{% static 'image/kakaoBtn2.png' %}" alt="카카오검색"></button>
+      <button id="naverSearchButton" class="modal__naverSearch--button"><img src="{% static 'image/naverBtn2.png' %}" alt="네이버검색"></button>
+      <button id="goBack" class="modal__goback--button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+        </svg>
+      </button>    
+      <p style="color: red; margin-top: 10px;">이미지를 클릭 후 한 번 더 클릭하면 첨부됩니다</p>  
+    </div>
+    <!--이미지 크게보기-->
+    <div id="enlargedImage" style="margin: 0 auto;">   
+      <img src="" alt=""/>
+    </div>
+    <!--이미지 결과-->
+    <div id="searchResult"></div>
+    <button id="loadMore" class="modal__more--button">더보기</button>
+    
+    <script>
+      // Get the modal
+      var modal = document.getElementById("myModal");
+    
+      // Get the button that opens the modal
+      var btn = document.getElementById("webImageButton");
+    
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+    
+      // Get the "go back" button that closes the enlarged image
+      var goBackBtn = document.getElementById("goBack");
+    
+      // When the user clicks on the button, open the modal
+      btn.onclick = function() {
+        modal.style.display = "block";
+      }
+    
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+        modal.style.display = "none";
+        // Add this to clear search results when the modal is closed
+        images = [];
+        $("#searchResult").empty();
+        $("#myModal .modal-content img").attr("src", "");
+      }
+    
+      // When the user clicks on the "go back" button, close the enlarged image
+      goBackBtn.onclick = function() {
+        $("#enlargedImage img").attr("src", ""); // Clear the enlarged image
+        $("#enlargedImage").hide();  // Hide the enlarged image
+        showImages();  // Show the search results again
+      }
+    
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+          // Add this to clear search results when the modal is closed
+          images = [];
+          $("#searchResult").empty();
+          $("#myModal .modal-content img").attr("src", "");
+        }
+      }
+    
+      var images = [];
+      var visibleImages = 8;
+      var searchSource = '';
+    
+      function showImages() {
+        $("#searchResult").empty();
+        for (var i = 0; i < visibleImages && i < images.length; i++) {
+          var img = $('<img />', { 
+            'src': searchSource === 'kakao' ? images[i]['image_url'] : images[i]['link'], 
+            'alt': searchSource === 'kakao' ? images[i]['display_sitename'] : images[i]['title']
+          });
+          $('#searchResult').append(img);
+        }
+      }
+      
+      $("#loadMore").click(function() {
+        visibleImages += 8;
+        showImages();
+      });
+    
+      $("#kakaoSearchButton").click(function() {
+        searchSource = 'kakao';
+        searchImages("{% url 'tcat:kakao_image_search' %}");
+      });
+    
+      $("#naverSearchButton").click(function() {
+        searchSource = 'naver';
+        searchImages("{% url 'tcat:naver_image_search' %}");
+      });
+    
+      function searchImages(url) {
+        var query = $("#query").val();
+    
+        $.ajax({
+          url: url,
+          data: {
+            'query': query,
+            'resolution': 'high'
+          },
+          dataType: 'json',
+          success: function(data) {
+            images = searchSource === 'kakao' ? data['documents'] : data['items'];
+            visibleImages = 8;
+            showImages();
+          }
+        });
+      }
+      $("#searchResult").on("click", "img", function() {
+        var src = $(this).attr("src");
+        $("#enlargedImage img").attr("src", src);
+        $("#searchResult").empty();
+        $("#enlargedImage").show();
+        $("#selectedImage").val(src);
+        $("#previewImage").attr("src", src);
+        $("#modalImage").attr("src", src);
+      });
+      $("#enlargedImage").on("click", "img", function() {
+        $("#myModal").hide();
+      });
+    
+      // 모달 외부를 클릭하면 모달을 숨김
+      $(window).click(function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+          // Add this to clear search results when the modal is closed
+          images = [];
+          $("#searchResult").empty();
+          $("#myModal .modal-content img").attr("src", "");
+        }
+      });
+    </script>
+  </div>
+</div>
+
+{% endblock content %}
+
+
+{% block javascript %}
+  <script type="text/javascript" src="{% static 'js/create.js' %}"></script>
+  <script src='{% static "js/calendar.js" %}'></script> <!-- 달력 -->
+{% endblock javascript %}

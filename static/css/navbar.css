@@ -1,0 +1,98 @@
+:root {
+    --main-color: #FF9A76;
+    --second-color: #FFEADB;
+    --third-color: #F7C5A8;
+    --fourth-color: #679B9B;
+}
+
+.nav__div {
+    min-width: 930px;
+    height: 85px;
+    border-bottom: 1px solid rgb(224, 224, 224);
+}
+
+/* .container-fluid {
+    width: 500px;
+} */
+
+.nav__div--logo--img {
+    height: 75px;
+    width: auto;
+}
+
+.fa-magnifying-glass {
+    color: #cecece;
+    /* --bs-btn-border-color: none; */
+}
+
+.nav__div--login {
+    text-decoration: none;
+    color: black;
+}
+
+.nav__div--signup {
+    text-decoration: none;
+    color: var(--main-color);
+}
+
+.nav__profile--img {
+    width: 35px; 
+    height: 35px; 
+    border: 1px solid black;
+    border-radius: 50% 50%;
+}
+
+.container{
+    height: auto;
+    min-height: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+footer {
+    /* flex-shrink: 0; */
+    /* background-color: var(--second-color); */
+    min-width: 1030px;
+    background-color: rgb(241, 241, 241);
+    height: 300px;
+    padding: 40px;
+}
+
+.footer__div {
+    height: 100%;
+
+}
+
+.footer__div--line {
+    border-left: 1px solid rgb(168, 168, 168);
+}
+
+.footer__div--link {
+    padding-left: 50px;
+}
+
+.footer__div--link > a {
+    text-decoration: none;
+    /* font-weight: bold; */
+    font-size: 16px;
+    color: black
+}
+
+.footer__info {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.footer__info2 {
+    font-size: 13px;
+    color: gray;
+}
+
+.footer__pjt--link {
+    color: #679B9B;
+}
+
+
+
+
+

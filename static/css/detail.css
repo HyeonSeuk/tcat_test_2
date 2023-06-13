@@ -1,0 +1,76 @@
+.detail__button{
+  width: 800px;
+  display: flex;
+  font-size: 18px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+.button__capture{
+  margin-left: 620px;
+}
+
+.button__capture > button {
+  background-color: white;
+  border: none;
+}
+
+.button__update{
+  margin-left: 40px;
+}
+
+.button__delete{
+  margin-left: 30px;
+}
+
+.button__delete button {
+  background-color: white;
+  border: none;
+}
+
+.detail__container {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.detail__image {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.detail__title {
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.detail__contents--background{
+  background-color: #FFEADB;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.detail__contents {
+  font-size: 18px;
+  margin: 10px 30px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail__contents--title {
+  margin-right: 10px;
+  color: rgb(140, 140, 140);
+}
+
+.carousel-control-prev-icon {
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 16px;
+}
+
+.carousel-control-next-icon {
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 16px;
+}
